@@ -16,6 +16,11 @@ THIN=`pwd`/"thin"
 CONFIGURE_FLAGS="--enable-cross-compile --disable-debug --disable-programs \
                  --disable-doc --enable-pic"
 
+if [[ -n "$LAME" ]]
+then
+	CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-libmp3lame"
+fi
+
 if [ "$X264" ]
 then
 	CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-gpl --enable-libx264"
@@ -107,6 +112,11 @@ then
 		CC="xcrun -sdk $XCRUN_SDK clang"
 		CXXFLAGS="$CFLAGS"
 		LDFLAGS="$CFLAGS"
+		if [ "$LAME" ]
+		then
+			CFLAGS="$CFLAGS -I$LAME/include"
+			LDFLAGS="$LDFLAGS -L$LAME/lib"
+		fi
 		if [ "$X264" ]
 		then
 			CFLAGS="$CFLAGS -I$X264/include"
